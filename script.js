@@ -41,3 +41,13 @@ function logout() {
 
   window.location.href = "login.html";
 }
+function saveName() {
+
+  let newName = document.getElementById("newName").value;
+
+  if (newName === "") return;
+
+  localStorage.setItem("nexifyUser", newName);
+
+  alert("Name updated!");
+}
