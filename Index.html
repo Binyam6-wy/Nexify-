@@ -1,9 +1,716 @@
+
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>my first Nexify</title>
-  </head>
-  <h1>social media</h1>
-<p>This is my first Nexify website </p>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Nebula | Immersive Design Experience</title>
+  <!-- Google Fonts + smooth base -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #05050f;
+      font-family: 'Inter', sans-serif;
+      color: #edeef2;
+      line-height: 1.4;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* animated gradient orb background */
+    .orb-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      background: radial-gradient(circle at 20% 30%, #0a0a2a, #020210);
+    }
+
+    .glow-mesh {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.5;
+      background-image: radial-gradient(circle at 25% 40%, rgba(80, 70, 255, 0.2) 2%, transparent 2.5%),
+                        radial-gradient(circle at 70% 85%, rgba(255, 100, 200, 0.18) 1.8%, transparent 2.2%);
+      background-size: 55px 55px, 80px 80px;
+      animation: slowDrift 28s linear infinite;
+    }
+
+    @keyframes slowDrift {
+      0% { background-position: 0 0, 0 0; }
+      100% { background-position: 120px 120px, -80px 60px; }
+    }
+
+    /* floating particles effect (pseudo) */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .particles span {
+      position: absolute;
+      background: rgba(180, 170, 255, 0.35);
+      border-radius: 50%;
+      animation: floatParticle 12s infinite alternate ease-in-out;
+      pointer-events: none;
+    }
+
+    @keyframes floatParticle {
+      0% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0.2; }
+      100% { transform: translateY(-60px) translateX(35px) scale(1.2); opacity: 0.6; }
+    }
+
+    /* main container */
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 2rem 2rem 4rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* header / navigation */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding: 1rem 0 2rem 0;
+      border-bottom: 1px solid rgba(110, 120, 220, 0.25);
+      backdrop-filter: blur(2px);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(130deg, #c084fc, #60a5fa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      font-weight: 500;
+    }
+
+    .nav-links a {
+      color: #cbd5e6;
+      text-decoration: none;
+      transition: 0.2s;
+      font-size: 1rem;
+    }
+
+    .nav-links a:hover {
+      color: #a78bfa;
+      transform: translateY(-2px);
+    }
+
+    /* hero section */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 3rem 0 4rem;
+    }
+
+    .badge {
+      background: rgba(139, 92, 246, 0.2);
+      backdrop-filter: blur(8px);
+      padding: 0.35rem 1rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      border: 0.5px solid rgba(167, 139, 250, 0.5);
+      margin-bottom: 1.5rem;
+      display: inline-block;
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffffff 0%, #b6a9ff 45%, #7c8eff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1.2;
+      max-width: 900px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 620px;
+      color: #b9c2d4;
+      margin: 1.5rem 0 2rem;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: linear-gradient(105deg, #6c47ff, #9b6dff);
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      transition: 0.25s ease;
+      box-shadow: 0 8px 20px rgba(108, 71, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.02);
+      box-shadow: 0 12px 26px rgba(108, 71, 255, 0.5);
+      background: linear-gradient(105deg, #7d5aff, #ab80ff);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(155, 135, 245, 0.7);
+      padding: 0.8rem 2rem;
+      border-radius: 60px;
+      font-weight: 500;
+      color: #e0e7ff;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-outline:hover {
+      background: rgba(108, 71, 255, 0.2);
+      border-color: #a07eff;
+    }
+
+    /* cards grid */
+    .section-title {
+      font-size: 2rem;
+      font-weight: 600;
+      margin: 3.5rem 0 1rem 0;
+      letter-spacing: -0.02em;
+      background: linear-gradient(to right, #eef2ff, #bcadff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .section-sub {
+      color: #8f9bb5;
+      margin-bottom: 2rem;
+      border-left: 3px solid #8b5cf6;
+      padding-left: 1rem;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0 2rem;
+    }
+
+    .card {
+      background: rgba(20, 22, 45, 0.6);
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      padding: 1.8rem;
+      border: 1px solid rgba(130, 110, 230, 0.25);
+      transition: all 0.3s ease;
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.3);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(168, 139, 255, 0.6);
+      background: rgba(30, 32, 60, 0.7);
+      box-shadow: 0 28px 40px -15px rgba(90, 60, 200, 0.3);
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .card h3 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 0.7rem;
+    }
+
+    .card p {
+      color: #b7c0dd;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* interactive counter section */
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      background: rgba(12, 14, 35, 0.65);
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      margin: 3rem 0;
+      padding: 2rem 1rem;
+      justify-content: space-around;
+      border: 1px solid rgba(130, 110, 255, 0.3);
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 1rem;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .stat-number {
+      font-size: 2.7rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #e0e7ff, #bca9ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -1px;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #98a1c2;
+      margin-top: 0.4rem;
+    }
+
+    button.small-btn {
+      background: #2d2a5c;
+      border: none;
+      color: white;
+      padding: 0.4rem 1rem;
+      border-radius: 60px;
+      font-size: 0.8rem;
+      margin-top: 0.8rem;
+      cursor: pointer;
+      transition: 0.2s;
+      font-weight: 500;
+    }
+
+    button.small-btn:hover {
+      background: #5842bc;
+    }
+
+    /* testimonial / quote */
+    .quote-block {
+      background: linear-gradient(115deg, rgba(60, 45, 110, 0.5), rgba(25, 28, 55, 0.7));
+      border-radius: 2rem;
+      padding: 2rem 2rem;
+      margin: 2rem 0 3rem;
+      border-left: 6px solid #9b72ff;
+      backdrop-filter: blur(4px);
+    }
+
+    .quote-text {
+      font-size: 1.4rem;
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    .quote-author {
+      margin-top: 1rem;
+      font-weight: 500;
+      color: #c7b9ff;
+    }
+
+    /* dynamic gallery / hover grid */
+    .showcase {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin: 2rem 0;
+    }
+
+    .show-item {
+      flex: 1;
+      min-width: 180px;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 1.5rem;
+      padding: 1.4rem;
+      text-align: center;
+      transition: 0.2s;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .show-item:hover {
+      background: rgba(90, 70, 180, 0.3);
+      transform: scale(1.02);
+    }
+
+    .color-chip {
+      width: 50px;
+      height: 50px;
+      border-radius: 1rem;
+      margin: 0 auto 1rem;
+      background: linear-gradient(145deg, #ff7e5e, #feb47b);
+    }
+
+    /* footer */
+    footer {
+      margin-top: 5rem;
+      padding-top: 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(110, 100, 200, 0.3);
+      font-size: 0.85rem;
+      color: #7a84a8;
+    }
+
+    @media (max-width: 700px) {
+      .navbar {
+        flex-direction: column;
+      }
+      .container {
+        padding: 1rem 1.2rem 3rem;
+      }
+      .stat-number {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="orb-bg"></div>
+<div class="glow-mesh"></div>
+<div class="particles" id="particlesContainer"></div>
+
+<main class="container">
+  <nav class="navbar">
+    <div class="logo">✦ NEBULA STUDIO</div>
+    <div class="nav-links">
+      <a href="#">Explore</a>
+      <a href="#">Work</a>
+      <a href="#">Insights</a>
+      <a href="#">Contact</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <span class="badge">✨ AI + immersive design</span>
+    <h1>Where code meets<br>creative frontiers</h1>
+    <p>Crafting interactive experiences that blur the line between digital and emotion. Meet the future of web expression.</p>
+    <div class="cta-group">
+      <button class="btn-primary" id="launchBtn">Launch experience ✨</button>
+      <button class="btn-outline" id="discoverBtn">Discover →</button>
+    </div>
+  </div>
+
+  <div>
+    <h2 class="section-title">Immersive capabilities</h2>
+    <div class="section-sub">Powered by reactive design & real-time interaction</div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">🌀</div>
+        <h3>Neural motion</h3>
+        <p>Real-time fluid simulations and reactive micro-interactions that respond to your cursor movements.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">✨</div>
+        <h3>Generative glow</h3>
+        <p>Dynamic gradients and particle systems that evolve with every scroll — always unique.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h3>Lightning core</h3>
+        <p>Optimized WebGL-ready architecture with smooth 120fps animations, zero compromise.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive stats + dynamic counter (JavaScript) -->
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-number" id="expCounter">0</div>
+      <div class="stat-label">Active experiences</div>
+      <button class="small-btn" id="incExpBtn">+ interact</button>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" id="satCounter">0</div>
+      <div class="stat-label">Satisfaction rate</div>
+      <button class="small-btn" id="boostSatBtn">boost ⚡</button>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" id="nodeCounter">0</div>
+      <div class="stat-label">Creative nodes</div>
+      <button class="small-btn" id="refreshNodesBtn">refresh ↻</button>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    <div class="quote-text">“Design is not just what it looks like — it’s how it breathes, moves, and makes you feel. This platform redefines immersion.”</div>
+    <div class="quote-author">— Elena Voss, Creative Technologist</div>
+  </div>
+
+  <h2 class="section-title">Chromatic spectrum</h2>
+  <div class="section-sub">Hover over each swatch to feel dynamic transformation</div>
+  <div class="showcase" id="dynamicShowcase">
+    <!-- dynamic JS-generated items will be placed here, plus static fallback -->
+  </div>
+
+  <footer>
+    <p>© 2025 Nebula Studio — Where imagination renders into reality. All interactions are reactive.</p>
+  </footer>
+</main>
+
+<script>
+  (function() {
+    // ---------- Particle background generator ----------
+    const particlesContainer = document.getElementById('particlesContainer');
+    function createParticles(count = 45) {
+      for (let i = 0; i < count; i++) {
+        const span = document.createElement('span');
+        const size = Math.random() * 5 + 2;
+        span.style.width = `${size}px`;
+        span.style.height = `${size}px`;
+        span.style.left = `${Math.random() * 100}%`;
+        span.style.top = `${Math.random() * 100}%`;
+        span.style.animationDuration = `${Math.random() * 15 + 6}s`;
+        span.style.animationDelay = `${Math.random() * 8}s`;
+        span.style.opacity = Math.random() * 0.5 + 0.15;
+        span.style.background = `radial-gradient(circle, rgba(170, 150, 255, 0.7), rgba(100, 80, 220, 0.2))`;
+        particlesContainer.appendChild(span);
+      }
+    }
+    createParticles(60);
+
+    // ---------- Interactive counters with localstorage-like dynamic but just UI fun ----------
+    let expCount = 1247;
+    let satPercent = 96;
+    let nodeCount = 183;
+
+    const expElem = document.getElementById('expCounter');
+    const satElem = document.getElementById('satCounter');
+    const nodeElem = document.getElementById('nodeCounter');
+
+    function updateCountersUI() {
+      expElem.innerText = expCount.toLocaleString();
+      satElem.innerText = `${satPercent}%`;
+      nodeElem.innerText = nodeCount.toLocaleString();
+    }
+    updateCountersUI();
+
+    document.getElementById('incExpBtn').addEventListener('click', () => {
+      expCount += Math.floor(Math.random() * 23) + 8;
+      updateCountersUI();
+      triggerMicroFeedback('exp');
+    });
+    document.getElementById('boostSatBtn').addEventListener('click', () => {
+      let increment = Math.floor(Math.random() * 4) + 1;
+      satPercent = Math.min(100, satPercent + increment);
+      if(satPercent === 100) {
+        // easter egg
+        satElem.style.textShadow = "0 0 6px #b48eff";
+        setTimeout(() => satElem.style.textShadow = "", 400);
+      }
+      updateCountersUI();
+      triggerMicroFeedback('sat');
+    });
+    document.getElementById('refreshNodesBtn').addEventListener('click', () => {
+      nodeCount += Math.floor(Math.random() * 15) + 5;
+      updateCountersUI();
+      triggerMicroFeedback('node');
+    });
+
+    function triggerMicroFeedback(type) {
+      const btn = (type === 'exp') ? document.getElementById('incExpBtn') : (type === 'sat') ? document.getElementById('boostSatBtn') : document.getElementById('refreshNodesBtn');
+      btn.style.transform = 'scale(0.95)';
+      setTimeout(() => { if(btn) btn.style.transform = ''; }, 120);
+      // tiny ripple effect on stat number
+      let targetNum = (type === 'exp') ? expElem : (type === 'sat') ? satElem : nodeElem;
+      targetNum.style.opacity = '0.7';
+      setTimeout(() => targetNum.style.opacity = '', 200);
+    }
+
+    // ----- Dynamic showcase generator (interactive color chips)
+    const showcaseDiv = document.getElementById('dynamicShowcase');
+    const colorSchemes = [
+      { name: "Aurora pulse", gradient: "linear-gradient(135deg, #FF6A88, #FF99AC)", desc: "Warm dynamic" },
+      { name: "Neon haze", gradient: "linear-gradient(120deg, #00F5A0, #00D9F5)", desc: "Cyber vibe" },
+      { name: "Phantom violet", gradient: "linear-gradient(145deg, #B794F4, #6B46C1)", desc: "Deep ether" },
+      { name: "Solar flare", gradient: "linear-gradient(115deg, #FBBF24, #F97316)", desc: "Radiant edge" },
+    ];
+    function buildShowcase() {
+      showcaseDiv.innerHTML = '';
+      colorSchemes.forEach((scheme, idx) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'show-item';
+        const chip = document.createElement('div');
+        chip.className = 'color-chip';
+        chip.style.background = scheme.gradient;
+        const title = document.createElement('h4');
+        title.textContent = scheme.name;
+        title.style.margin = '0.5rem 0 0.25rem';
+        title.style.fontSize = '1.1rem';
+        const desc = document.createElement('p');
+        desc.textContent = scheme.desc;
+        desc.style.fontSize = '0.75rem';
+        desc.style.color = '#bfc9ec';
+        itemDiv.appendChild(chip);
+        itemDiv.appendChild(title);
+        itemDiv.appendChild(desc);
+        itemDiv.addEventListener('click', () => {
+          // interactive feedback: change temporary background hint
+          document.body.style.transition = 'background 0.3s';
+          const oldBodyBg = document.body.style.background;
+          document.body.style.background = scheme.gradient;
+          setTimeout(() => {
+            document.body.style.background = '';
+          }, 400);
+          // also show small alert-like toaster
+          showToast(`✨ ${scheme.name} activated`);
+        });
+        showcaseDiv.appendChild(itemDiv);
+      });
+    }
+    buildShowcase();
+
+    // Toast notification utility (simple)
+    function showToast(msg) {
+      let toast = document.getElementById('dynamicToast');
+      if(!toast) {
+        toast = document.createElement('div');
+        toast.id = 'dynamicToast';
+        toast.style.position = 'fixed';
+        toast.style.bottom = '25px';
+        toast.style.left = '50%';
+        toast.style.transform = 'translateX(-50%)';
+        toast.style.backgroundColor = 'rgba(20, 15, 55, 0.9)';
+        toast.style.backdropFilter = 'blur(12px)';
+        toast.style.color = '#e2ddff';
+        toast.style.padding = '12px 24px';
+        toast.style.borderRadius = '40px';
+        toast.style.fontSize = '0.9rem';
+        toast.style.fontWeight = '500';
+        toast.style.border = '1px solid #a78bfa';
+        toast.style.zIndex = '9999';
+        toast.style.whiteSpace = 'nowrap';
+        toast.style.fontFamily = 'inherit';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = msg;
+      toast.style.opacity = '1';
+      toast.style.transition = 'opacity 0.2s';
+      clearTimeout(window.toastTimeout);
+      window.toastTimeout = setTimeout(() => {
+        toast.style.opacity = '0';
+      }, 2000);
+    }
+
+    // hero button interactions
+    const launchBtn = document.getElementById('launchBtn');
+    const discoverBtn = document.getElementById('discoverBtn');
+    launchBtn.addEventListener('click', () => {
+      showToast('🚀 Launch sequence initiated — immersive portal loading');
+      // fun ripple effect on hero
+      const heroDiv = document.querySelector('.hero');
+      heroDiv.style.transform = 'scale(1.01)';
+      setTimeout(() => heroDiv.style.transform = '', 200);
+      // optional: increment exp count as 'new experience'
+      expCount += 1;
+      updateCountersUI();
+    });
+    discoverBtn.addEventListener('click', () => {
+      showToast('🔮 Discover the hidden layers — scroll to explore');
+      document.querySelector('.cards-grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // additional interactive hover effect on stat cards : just adding motion
+    const statItems = document.querySelectorAll('.stat-item');
+    statItems.forEach(item => {
+      item.addEventListener('mouseenter', (e) => {
+        item.style.transform = 'translateY(-5px)';
+        item.style.transition = '0.2s';
+      });
+      item.addEventListener('mouseleave', () => {
+        item.style.transform = 'translateY(0px)';
+      });
+    });
+
+    // random parallax movement for particles on mousemove (lightweight)
+    document.addEventListener('mousemove', (e) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      const moveX = (x - 0.5) * 15;
+      const moveY = (y - 0.5) * 15;
+      const glowMesh = document.querySelector('.glow-mesh');
+      if(glowMesh) {
+        glowMesh.style.transform = `translate(${moveX * 0.3}px, ${moveY * 0.3}px)`;
+      }
+      const orb = document.querySelector('.orb-bg');
+      if(orb) {
+        orb.style.background = `radial-gradient(circle at ${30 + x * 20}% ${20 + y * 20}%, #0e0e2a, #010105)`;
+      }
+    });
+
+    // optional: add a dynamic "current time" or just interaction: counter initial animation
+    function startCountAnimation() {
+      let startExp = 0;
+      const targetExp = 1247;
+      const interval = setInterval(() => {
+        if(startExp >= targetExp) {
+          clearInterval(interval);
+          expElem.innerText = targetExp.toLocaleString();
+          return;
+        }
+        startExp += Math.ceil(targetExp / 45);
+        if(startExp > targetExp) startExp = targetExp;
+        expElem.innerText = startExp.toLocaleString();
+      }, 25);
+      satElem.innerText = '96%';
+      nodeElem.innerText = '183';
+    }
+    // only run if counter is 0 (initial)
+    if(expElem.innerText === '0') startCountAnimation();
+
+    // card interactive dynamic gradient mapping on hover
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const xPercent = (x / rect.width) * 100;
+        const yPercent = (y / rect.height) * 100;
+        card.style.background = `radial-gradient(circle at ${xPercent}% ${yPercent}%, rgba(100, 80, 220, 0.35), rgba(20, 18, 48, 0.8))`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.background = 'rgba(20, 22, 45, 0.6)';
+      });
+    });
+  })();
+</script>
 </body>
 </html>
+```
