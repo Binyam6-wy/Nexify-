@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="am">
 <head>
@@ -140,6 +139,66 @@
             <button id="sendBtn">ላክ</button>
         </div>
     </div>
+
+    <!-- አዲሱ የ JavaScript (JS) ክፍል እዚህ ይጀምራል -->
+    <script>
+        const chatBox = document.getElementById('chatBox');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        // መልእክት ለመላክ የምንጠቀምበት ፈንክሽን
+        function sendMessage() {
+            const messageText = userInput.value.trim();
+            if (messageText === '') return; // ባዶ ከሆነ ምንም አያደርግም
+
+            // 1. ያንተን መልእክት በገጹ ላይ ማሳየት
+            appendMessage(messageText, 'user-message');
+            userInput.value = ''; // መጻፊያ ሳጥኑን ባዶ ማድረግ
+
+            // 2. AIው መልእክትህን እየተቀበለ እንደሆነ "Typing..." ማሳየት
+            const loadingId = appendMessage("Thinking...", 'ai-message');
+
+            // 3. ወደፊት ከ Python (Backend) ጋር ስናገናኘው እውነተኛ ምላሽ ይመጣል፤ 
+            // ለአሁኑ ግን በጊዜያዊነት ከ2 ሰከንድ በኋላ ምላሽ እንዲሰጥ እናድርገው፡
+            setTimeout(() => {
+                // የ "Thinking..." መልእክቱን ማጥፋት
+                const loadingEl = document.getElementById(loadingId);
+                if (loadingEl) loadingEl.remove();
+
+                // የ AI ጊዜያዊ መልእክት
+                const aiResponse = `Your text was received! Once we set up Python, I will strictly correct: "${messageText}"`;
+                appendMessage(aiResponse, 'ai-message');
+            }, 2000);
+        }
+
+        // መልእክቶችን ወደ ቻት ሳጥኑ የሚጨምር ፈንክሽን
+        function appendMessage(text, className) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', className);
+            messageDiv.innerText = text;
+            
+            // ለጊዜያዊ መልእክት መለያ ID መስጠት
+            const uniqueId = 'msg-' + Date.now();
+            messageDiv.setAttribute('id', uniqueId);
+
+            chatBox.appendChild(messageDiv);
+            
+            // አዳዲስ መልእክቶች ሲመጡ ቻቱን ወደ ታች አውቶማቲክ ማውረድ (Scroll)
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            return uniqueId;
+        }
+
+        // "ላክ" ቁልፍ ሲጫን
+        sendBtn.addEventListener('click', sendMessage);
+
+        // በኪቦርድ "Enter" ሲጫን እንዲልክ ማድረግ
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
 
 </body>
 </html>
